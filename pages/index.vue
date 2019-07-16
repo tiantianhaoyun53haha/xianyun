@@ -18,14 +18,19 @@
       <div class="search-bar">
         <!-- tab栏 -->
         <el-row type="flex" class="search-tab">
-          <span :class="{active: index === currentOption}">
-            <i>攻略</i>
+          <span :class="{active: index === current}"
+           v-for="(item,index) in tab"
+          :key="index"
+          @click="handleClick(index)"
+         >
+            <i>{{item.title}}</i>
           </span>
         </el-row>
 
         <!-- 输入框 -->
         <el-row type="flex" align="middle" class="search-input">
-          <input v-model="searchValue" />
+          <input
+           :placeholder="tab[current].placeholder"/>
           <i class="el-icon-search"></i>
         </el-row>
       </div>
@@ -38,8 +43,23 @@
 export default {
   data() {
     return {
-      banners: []
+      banners: [],
+      current:0,
+      tab:[
+        {title:"攻略",placeholder:"搜索城市"},
+        {title:"酒店",placeholder:"请输入城市搜索酒店"},
+        {title:"机票",placeholder:""}
+      ]
     };
+  },
+  methods:{
+    handleClick(index){
+      if(index===2){
+        // 还是用this.$router在进行跳转
+        this.$router.push("/air");
+      }
+      this.current=index
+    }
   },
   mounted() {
     console.log(123);
@@ -65,6 +85,7 @@ export default {
   min-width: 1000px;
   margin: 0 auto;
   position: relative;
+  // vertical-align: center
 
   /deep/ .el-carousel__container {
     height: 700px;
@@ -79,7 +100,7 @@ export default {
     z-index: 9;
     width: 1000px;
     position: absolute;
-    opacity: 0.7;
+   
     left: 50%;
     top: 45%;
     margin-left: -500px;

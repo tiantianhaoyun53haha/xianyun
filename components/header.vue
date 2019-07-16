@@ -18,7 +18,22 @@
       <div>
         <div>
           <!-- 注意：跳转的后面需要加to，不然容易报错 -->
-          <nuxt-link to="/user/login">登录 / 注册</nuxt-link>
+          <!-- <nuxt-link to="/user/login">登录 / 注册</nuxt-link> -->
+        </div>
+
+        <div>
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              <img src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt="">
+              天气真好
+              <i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item>个人中心</el-dropdown-item>
+              <el-dropdown-item>退出</el-dropdown-item>
+            
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
       </div>
     </el-row>
@@ -51,15 +66,14 @@ export default {};
       border-bottom: 5px #409eff solid;
     }
   }
-.nuxt-link-exact-active {
-  background: #409eff;
-  color: #fff;
-
-  &:hover {
+  .nuxt-link-exact-active {
+    background: #409eff;
     color: #fff;
-  }
-}
 
+    &:hover {
+      color: #fff;
+    }
+  }
 }
 .logo {
   margin-right: 20px;
@@ -69,5 +83,9 @@ export default {};
     margin-top: 9px;
   }
 }
-
+.el-dropdown-link img{
+  width: 36px;
+  height:36px;
+  vertical-align: middle;
+}
 </style>
