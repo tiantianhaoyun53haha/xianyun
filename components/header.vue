@@ -16,15 +16,15 @@
       </el-row>
       <!-- 登陆信息 -->
       <div>
-        <div>
+        <div v-if="!$store.state.user.userInfo.user.nickname">
           <!-- 注意：跳转的后面需要加to，不然容易报错 -->
-          <!-- <nuxt-link to="/user/login">登录 / 注册</nuxt-link> -->
+          <nuxt-link to="/user/login">登录 / 注册</nuxt-link>
         </div>
 
         <div>
           <el-dropdown>
             <span class="el-dropdown-link">
-              <img src="http://157.122.54.189:9095/assets/images/avatar.jpg" alt="">
+              <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" alt="">
               {{$store.state.user.userInfo.user.nickname}}
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
