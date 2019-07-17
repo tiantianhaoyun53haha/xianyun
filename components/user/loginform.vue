@@ -41,8 +41,8 @@ export default {
         return {
             // 表单数据
             form: {
-                username:"",
-                password:""
+                username:"13800138000",
+                password:"123456"
 
             },
             // 表单规则
@@ -71,6 +71,7 @@ export default {
                 data:this.form
             }).then(res=>{
                 console.log(res)
+              this.$store.commit("user/setUserInfo",res.data) 
             })
         }
       })
