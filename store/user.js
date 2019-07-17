@@ -17,18 +17,34 @@ export const state = () => {
 export const mutations = {
     // 设置用户的数据
     setUserInfo(state, data) {
-        console.log(567)
+  
         state.userInfo = data
-        console.log(state.userInfo)
+  
     },
-    clearUserInfo(state){
+    clearUserInfo(state) {
         // 注意：这里的意思是给state.userInfo赋值，而不是定义
         // 赋值是=，定义是：
-        state.userInfo={
-            token:'',
-            user:{}
+        state.userInfo = {
+            token: '',
+            user: {}
         }
     }
 }
 
 // action：异步请求state数据
+export const actions = {
+    // commit就是store身上的方法
+    login({ commit }, data) {
+        this.$axios({
+            url: "/accounts/login",
+            method: "POST",
+            data,
+        })
+            .then(res => {
+              
+           commit("setUserInfo", res.data)
+            })
+
+
+    }
+}

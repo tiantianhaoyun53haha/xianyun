@@ -65,14 +65,7 @@ export default {
         //   验证通过
          console.log(valid)
         if(valid){
-            this.$axios({
-                url:"/accounts/login",
-                method:"POST",
-                data:this.form
-            }).then(res=>{
-                console.log(res)
-              this.$store.commit("user/setUserInfo",res.data) 
-            })
+       this.$store.dispatch("user/login",this.form)
         }
       })
          
