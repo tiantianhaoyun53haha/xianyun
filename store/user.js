@@ -1,27 +1,33 @@
 // 这里面有3个模块
 
 // state:存数据
-export const  state=()=>{
+export const state = () => {
     return {
-        userInfo:{
+        userInfo: {
             // 将登陆成功之后用户的数据存储起来
-            token:"",
-            user:{
-                nickname:"",
+            token: "",
+            user: {
+                nickname: "",
             }
         }
     }
 }
 
 // mutations：同步设置修改state的数据
-export const mutations={
+export const mutations = {
     // 设置用户的数据
-    setUserInfo(state,data){
+    setUserInfo(state, data) {
         console.log(567)
-        state.userInfo=data
+        state.userInfo = data
         console.log(state.userInfo)
-
-
+    },
+    clearUserInfo(state){
+        // 注意：这里的意思是给state.userInfo赋值，而不是定义
+        // 赋值是=，定义是：
+        state.userInfo={
+            token:'',
+            user:{}
+        }
     }
 }
 

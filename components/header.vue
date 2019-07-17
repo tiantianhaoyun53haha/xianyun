@@ -24,14 +24,15 @@
         <div>
           <el-dropdown>
             <span class="el-dropdown-link">
-              <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" alt="">
+              <img :src="$axios.defaults.baseURL+$store.state.user.userInfo.user.defaultAvatar" alt />
               {{$store.state.user.userInfo.user.nickname}}
-              <i class="el-icon-arrow-down el-icon--right"></i>
+              <i
+                class="el-icon-arrow-down el-icon--right"
+              ></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>个人中心</el-dropdown-item>
-              <el-dropdown-item>退出</el-dropdown-item>
-            
+              <el-dropdown-item @click.native="handlelogout">退出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -41,7 +42,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    handlelogout() {
+      this.$store.commit("user/clearUserInfo");
+      this.$message.success("退出成功");
+    }
+  }
+};
 </script>
 
 <style scoped lang="less">
@@ -83,9 +91,12 @@ export default {};
     margin-top: 9px;
   }
 }
-.el-dropdown-link img{
-  width: 36px;
-  height:36px;
-  vertical-align: middle;
+.el-dropdown-link {
+  outline: none;
+  img {
+    width: 36px;
+    height: 36px;
+    vertical-align: middle;
+  }
 }
 </style>
