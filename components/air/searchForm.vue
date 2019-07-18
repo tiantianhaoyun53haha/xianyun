@@ -31,11 +31,18 @@
           placeholder="请搜索到达城市"
           @select="handleDestSelect"
           class="el-autocomplete"
+          v-model="form.destCity"
         ></el-autocomplete>
       </el-form-item>
       <el-form-item label="出发时间">
         <!-- change 用户确认选择日期时触发 -->
-        <el-date-picker type="date" placeholder="请选择日期" style="width: 100%;" @change="handleDate"></el-date-picker>
+        <el-date-picker
+          v-model="form.departDate"
+          type="date"
+          placeholder="请选择日期"
+          style="width: 100%;"
+          @change="handleDate"
+        ></el-date-picker>
       </el-form-item>
       <el-form-item label>
         <el-button style="width:100%;" type="primary" icon="el-icon-search" @click="handleSubmit">搜索</el-button>
@@ -98,6 +105,8 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
+           this.form.departCity=newData[0].value;
+        this.form.departCode=newData[0].sort;
         cb(newData);
       });
     },
@@ -105,14 +114,44 @@ export default {
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
-      cb([{ value: 1 }, { value: 2 }, { value: 3 }]);
+      // 下拉列表不显示，当没有输入值的时候
+      if (!value) {
+        cb([]);
+        return;
+      }
+      // 发起请求，将后台返回的数据展示在下拉列表里面
+      this.$axios({
+        url: "/airs/city",
+        // get方式传递的参数会自动拼接在url后面
+        params: {
+          name: value
+        }
+      }).then(res => {
+        const { data } = res.data;
+        // 给数组中的对象添加value值，
+        // 因为返回来的数据身上没有value值，我们需要把数据处理之后，然后把处理后的数据作为value的值放在data里面的每个对象身上
+        // 就是把返回的值中的城市信息去掉市字，放在一个新的数组里面
+        const newData = data.map(v => {
+          v.value = v.name.replace("市", "");
+          return v;
+        });
+        this.form.destCity=newData[0].value;
+        this.form.destCode=newData[0].sort;
+        cb(newData);
+      });
     },
 
     // 出发城市下拉选择时触发
-    handleDepartSelect(item) {},
+    handleDepartSelect(item) {
+      this.form.departCity = item.value;
+      this.form.departCode = item.sort;
+    },
 
     // 目标城市下拉选择时触发
-    handleDestSelect(item) {},
+    handleDestSelect(item) {
+      this.form.destCity = item.value;
+      this.form.destCity = item.sort;
+    },
 
     // 确认选择日期时触发
     handleDate(value) {},
