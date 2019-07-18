@@ -5,16 +5,16 @@
       <el-input placeholder="用户名手机" v-model="form.username"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" prop="nickname">
-      <el-input placeholder="验证码" v-model="form.nickname">
+    <el-form-item class="form-item" prop="captcha">
+      <el-input placeholder="验证码" v-model="form.captcha">
         <template slot="append">
           <el-button @click="handleSendCaptcha">发送验证码</el-button>
         </template>
       </el-input>
     </el-form-item>
     <!-- v-model需要放在input标签里面 -->
-    <el-form-item class="form-item" prop="captcha">
-      <el-input placeholder="你的名字" v-model="form.captcha"></el-input>
+    <el-form-item class="form-item" prop="nickname">
+      <el-input placeholder="你的名字" v-model="form.nickname"></el-input>
     </el-form-item>
 
     <el-form-item class="form-item" prop="password">
@@ -38,7 +38,7 @@ export default {
     const validatePass = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.form.pass) {
+      } else if (value !== this.form.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -47,11 +47,12 @@ export default {
     return {
       // 表单数据
       form: {
-        username: "", //手机号码
-        nickname: "", //昵称
-        captcha: "", //手机验证码
-        password: "", //密码
-        checkPassword: "" //再次输入密码
+        username: "13800138009", //手机号码
+        nickname: "赵丽颖", //昵称
+        captcha: "000000", //手机验证码，注意放对位置，不然就会提示你写正确了，但是后台还是返回验证码错误
+        
+        password: "123456", //密码
+        checkPassword: "123456" //再次输入密码
       },
       // 表单规则
       rules: {
@@ -80,15 +81,18 @@ export default {
       // 发送验证码，发起请求，并提示用户
       this.$axios({
         url: "/captchas",
-        methods: "POST",
+        method: "POST",
         data: {
           tel: phoneNumber
         }
       }).then(res => {
-        const { code } = res.data;
-        this.$alert(`手机验证码是${code}`, "提示信息", {
+        //   console.log(res)
+        //   console.log(res.data)  
+        const code = res.data.code;
+        // console.log(code)
+        this.$alert(`手机验证码是:${code}`, "提示信息", {
           confirmButtonText: "确定",
-        //   提示信息前面的小图标
+          //   提示信息前面的小图标
           type: "warning"
         });
       });
@@ -96,7 +100,27 @@ export default {
 
     // 注册
     handleRegSubmit() {
-      console.log(this.form);
+      // 非空验证
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          const { checkPassword, ...props }=this.form
+          console.log(456)
+
+          this.$axios({
+            url: "/accounts/register",
+            method: "POST",
+            data: props
+          })
+          .then(res=>{
+              console.log(123)
+            //   注册就跳转到登录的页面，并把注册的用户信息渲染到页面上
+            // 这里的data就已经是我们的数据对象了
+            this.$store.commit("user/setUserInfo",res.data)
+            this.$router.back()
+          })
+
+        }
+      });
     }
   }
 };
