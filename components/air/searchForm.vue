@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import moment from"moment";
+import moment from "moment";
 export default {
   data() {
     return {
@@ -106,8 +106,8 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
-           this.form.departCity=newData[0].value;
-        this.form.departCode=newData[0].sort;
+        this.form.departCity = newData[0].value;
+        this.form.departCode = newData[0].sort;
         cb(newData);
       });
     },
@@ -136,8 +136,8 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
-        this.form.destCity=newData[0].value;
-        this.form.destCode=newData[0].sort;
+        this.form.destCity = newData[0].value;
+        this.form.destCode = newData[0].sort;
         cb(newData);
       });
     },
@@ -156,15 +156,52 @@ export default {
 
     // 确认选择日期时触发
     handleDate(value) {
-        this.form.departDate=moment(value).format("YYYY-MM-DD");
-        // console.log(  this.form.departDate)
+      this.form.departDate = moment(value).format("YYYY-MM-DD");
+      // console.log(  this.form.departDate)
     },
 
     // 触发和目标城市切换时触发
     handleReverse() {},
 
     // 提交表单是触发
-    handleSubmit() {}
+    handleSubmit() {
+      // 设置需要验证的数据
+      const rules = {
+        departCity: {
+          value: this.form.departCity,
+          message: "请选择出发城市"
+        },
+        destCity: {
+          value: this.form.destCity,
+          message: "请选择到达城市"
+        },
+        departDate: {
+          value: this.form.departDate,
+          message: "请选择出发日期"
+        }
+      };
+      // 函数的语句之间是用；隔开的
+      // 设置开关
+      let valid = true;
+      // 循环判断上面的语句是否为空
+      Object.keys(rules).forEach(v => {
+        // 判断只要一次为空，不会再执行循环，return的作用：可以终止函数的执行
+        if (valid) return;
+        // 判断字段是否为空
+        if(rules[v].value){
+          valid=false;
+          this.$message.warning(rules[v].message)
+        }
+      });
+
+      // 跳转
+      if(valid){
+        this.$router.push({
+          path:"/airs/flights",
+          query:this.form
+        })
+      }
+    }
   },
   mounted() {}
 };
