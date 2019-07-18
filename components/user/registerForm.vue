@@ -1,30 +1,28 @@
 <template>
   <!-- prop放在表格的最外面 -->
-  <el-form :model="form" ref="form" :rules="rules" class="form" >
-    <el-form-item class="form-item" prop="username"
-  
-    >
-      <el-input placeholder="用户名手机"   v-model="form.username"></el-input>
+  <el-form :model="form" ref="form" :rules="rules" class="form">
+    <el-form-item class="form-item" prop="username">
+      <el-input placeholder="用户名手机" v-model="form.username"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" prop="nickname"  >
-      <el-input placeholder="验证码"  v-model="form.nickname">
+    <el-form-item class="form-item" prop="nickname">
+      <el-input placeholder="验证码" v-model="form.nickname">
         <template slot="append">
           <el-button @click="handleSendCaptcha">发送验证码</el-button>
         </template>
       </el-input>
     </el-form-item>
-
-    <el-form-item class="form-item" prop="captcha" >
-      <el-input placeholder="你的名字"   v-model="form.captcha"></el-input>
+    <!-- v-model需要放在input标签里面 -->
+    <el-form-item class="form-item" prop="captcha">
+      <el-input placeholder="你的名字" v-model="form.captcha"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" prop="password"  >
-      <el-input placeholder="密码" type="password"  v-model="form.password"></el-input>
+    <el-form-item class="form-item" prop="password">
+      <el-input placeholder="密码" type="password" v-model="form.password"></el-input>
     </el-form-item>
 
-    <el-form-item class="form-item" prop="checkPassword"  >
-      <el-input placeholder="确认密码" type="password"  v-model="form.checkPassword"></el-input>
+    <el-form-item class="form-item" prop="checkPassword">
+      <el-input placeholder="确认密码" type="password" v-model="form.checkPassword"></el-input>
     </el-form-item>
 
     <el-button class="submit" type="primary" @click="handleRegSubmit">注册</el-button>
@@ -71,7 +69,30 @@ export default {
   },
   methods: {
     // 发送验证码
-    handleSendCaptcha() {},
+    handleSendCaptcha() {
+      // 验证手机栏是否为空，是，就终止下面代码的执行
+      const phoneNumber = this.form.username;
+      if (!phoneNumber.trim()) {
+        this.$message.warning("请输入用户名手机");
+        return;
+      }
+
+      // 发送验证码，发起请求，并提示用户
+      this.$axios({
+        url: "/captchas",
+        methods: "POST",
+        data: {
+          tel: phoneNumber
+        }
+      }).then(res => {
+        const { code } = res.data;
+        this.$alert(`手机验证码是${code}`, "提示信息", {
+          confirmButtonText: "确定",
+        //   提示信息前面的小图标
+          type: "warning"
+        });
+      });
+    },
 
     // 注册
     handleRegSubmit() {
