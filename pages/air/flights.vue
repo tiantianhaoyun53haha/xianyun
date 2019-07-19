@@ -14,7 +14,11 @@
                 
                 
                 <!-- 航班信息 -->
-                <flightsltem/>
+                <flightsltem  
+                v-for="(item,index) in flightData.flights"
+                :key="index"
+                :data="item"
+                />
             </div>
 
             <!-- 侧边栏 -->
@@ -34,12 +38,28 @@ import flightsltem from "@/components/air/flightsltem"
 export default {
     data(){
         return {
-            
+            flightData:{
+                flights:[],
+            }
         }
     },
     components:{
         flightsltem,
         flightListHead
+    },
+    mounted(){
+      this.$axios({
+          url:"/airs",
+          params:this.$route.query
+      })
+      .then(res=>{
+        //   console.log(res)
+        // 请求回来的数据都有用，大的数据是一个对象，那么我们也定义一个对象
+        // 来接收这个值
+        this.flightData=res.data;
+        
+
+      })  
     }
 }
 </script>
