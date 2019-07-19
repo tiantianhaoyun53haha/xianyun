@@ -80,7 +80,13 @@ export default {
   },
   methods: {
     // tab切换时触发
-    handleSearchTab(item, index) {},
+    handleSearchTab(item, index) {
+      if (index === 1) {
+        this.$alert("暂时没有往返", "提示", {
+          type: "warning"
+        });
+      }
+    },
 
     // 出发城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
@@ -161,7 +167,15 @@ export default {
     },
 
     // 触发和目标城市切换时触发
-    handleReverse() {},
+    handleReverse() {
+      const { departCity, departCode, destCity, destCode } = this.form;
+      // 将数据进行交换
+      this.form.departCity = destCity;
+      this.form.departCode = destCode;
+
+      this.form.destCity = departCity;
+      this.form.destCode = departCode;
+    },
 
     // 提交表单是触发
     handleSubmit() {
@@ -188,18 +202,18 @@ export default {
         // 判断只要一次为空，不会再执行循环，return的作用：可以终止函数的执行
         if (valid) return;
         // 判断字段是否为空
-        if(rules[v].value){
-          valid=false;
-          this.$message.warning(rules[v].message)
+        if (rules[v].value) {
+          valid = false;
+          this.$message.warning(rules[v].message);
         }
       });
 
       // 跳转
-      if(valid){
+      if (valid) {
         this.$router.push({
-          path:"/airs/flights",
-          query:this.form
-        })
+          path: "/airs/flights",
+          query: this.form
+        });
       }
     }
   },
