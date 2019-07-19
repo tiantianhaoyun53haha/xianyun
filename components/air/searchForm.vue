@@ -87,12 +87,11 @@ export default {
         });
       }
     },
+    // 封装的输入框里面改变时候触发的函数
 
-    // 出发城市输入框获得焦点时触发
-    // value 是选中的值，cb是回调函数，接收要展示的列表
-    queryDepartSearch(value, cb) {
+    querySearchCity(queryString, cb, callback) {
       // 下拉列表不显示，当没有输入值的时候
-      if (!value) {
+      if (!queryString) {
         cb([]);
         return;
       }
@@ -101,7 +100,7 @@ export default {
         url: "/airs/city",
         // get方式传递的参数会自动拼接在url后面
         params: {
-          name: value
+          name: queryString
         }
       }).then(res => {
         const { data } = res.data;
@@ -112,39 +111,25 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
-        this.form.departCity = newData[0].value;
-        this.form.departCode = newData[0].sort;
+        callback(newData);
         cb(newData);
+      });
+    },
+    // 出发城市输入框获得焦点时触发
+    // value 是选中的值，cb是回调函数，接收要展示的列表
+    queryDepartSearch(value, cb) {
+      this.querySearchCity(value, cb, (arr) => {
+        this.form.departCity = arr[0].value;
+        this.form.departCode = arr[0].sort;
       });
     },
 
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
-      // 下拉列表不显示，当没有输入值的时候
-      if (!value) {
-        cb([]);
-        return;
-      }
-      // 发起请求，将后台返回的数据展示在下拉列表里面
-      this.$axios({
-        url: "/airs/city",
-        // get方式传递的参数会自动拼接在url后面
-        params: {
-          name: value
-        }
-      }).then(res => {
-        const { data } = res.data;
-        // 给数组中的对象添加value值，
-        // 因为返回来的数据身上没有value值，我们需要把数据处理之后，然后把处理后的数据作为value的值放在data里面的每个对象身上
-        // 就是把返回的值中的城市信息去掉市字，放在一个新的数组里面
-        const newData = data.map(v => {
-          v.value = v.name.replace("市", "");
-          return v;
-        });
-        this.form.destCity = newData[0].value;
-        this.form.destCode = newData[0].sort;
-        cb(newData);
+      this.querySearchCity(value, cb,(arr)  => {
+        this.form.destCity = arr[0].value;
+        this.form.destCode = arr[0].sort;
       });
     },
 
@@ -157,7 +142,7 @@ export default {
     // 目标城市下拉选择时触发
     handleDestSelect(item) {
       this.form.destCity = item.value;
-      this.form.destCity = item.sort;
+      this.form.destCode = item.sort;
     },
 
     // 确认选择日期时触发
