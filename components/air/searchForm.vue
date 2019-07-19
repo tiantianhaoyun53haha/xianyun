@@ -196,7 +196,7 @@ export default {
       // 跳转
       if (valid) {
         this.$router.push({
-          path: "/airs/flights",
+          path: "/air/flights",
           query: this.form
         });
       }
