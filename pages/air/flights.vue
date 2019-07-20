@@ -54,6 +54,7 @@ export default {
       })
       .then(res=>{
         //   console.log(res)
+          console.log(res.data)
         // 请求回来的数据都有用，大的数据是一个对象，那么我们也定义一个对象
         // 来接收这个值
         this.flightData=res.data;
