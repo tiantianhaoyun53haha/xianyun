@@ -14,7 +14,7 @@
               <span>{{ data.org_airport_name }} {{ data.org_airport_quay }}</span>
             </el-col>
             <el-col :span="8" class="flight-time">
-              <span>{{ data.rankTime }}</span>
+              <span>{{rankTime }}</span>
             </el-col>
             <el-col :span="8" class="flight-airport">
               <strong>{{ data.arr_time }}</strong>
@@ -63,6 +63,38 @@ export default {
     return {
       isShow: false
     };
+  },
+  computed: {
+    rankTime() {
+      //   准备数据
+      const arr = this.data.arr_time; //19:30
+      const dep = this.data.dep_time; //17：00
+
+      // 将数据转换成为我们可以操作的类型，就是可以拿值
+      const end = arr.split(":");
+      const start = dep.split(":");
+
+      console.log(start, end);
+
+      // 第二天凌晨
+    // 数组之间直接比较大小，比较的是第一个值
+      if (end[0]*1 < start[0]*1) {
+        console.log(123);
+        end[0] += 24;
+      }
+
+      // 对我们可以拿到的数据进行操作，先相减，用间隔时间得到我们需要的值
+      const dis = end[0] * 60 + +end[1] - (start[0] * 60 + +start[1]);
+      //   console.log(dis)
+      console.log(end[0] * 60 + +end[1]);
+      console.log(start[0] * 60 + +start[1]);
+
+      const hours = Math.floor(dis / 60);
+      const min = dis % 60;
+
+      // 将我们得到的值拼接成字符串返回
+      return `${hours}时${min}分 `;
+    }
   },
   props: {
     // 数据
