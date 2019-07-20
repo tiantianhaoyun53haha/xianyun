@@ -49,7 +49,7 @@ export default {
         flights: []
       },
 
-      dataList:[],//重新渲染页面的数组
+    //   dataList:[],//重新渲染页面的数组
       pageIndex: 1, //当前页面数
       PageSize: 2, //当前页面条数
       total: 8
@@ -58,6 +58,14 @@ export default {
   components: {
     flightsltem,
     flightListHead
+  },
+  computed:{
+      dataList(){
+           return     this.flightData.flights.slice
+        ((this.pageIndex-1)*this.PageSize,
+        this.pageIndex*this.PageSize);
+        console.log(this.dataList)
+      }
   },
   mounted() {
     this.$axios({
@@ -70,30 +78,27 @@ export default {
       // 来接收这个值
       this.flightData = res.data;
     //   第一页的数据显示
-     this.setDataList()
+    //  this.setDataList()
     });
   },
   methods: {
     //   切换条数的时候触发
     handleSizeChange(value) {
         this.PageSize=value;
-         this.setDataList(value)
+        //  this.setDataList(value)
     },
     // 页面切换的时候触发
     handleCurrentChange(value) {
         this.pageIndex=value;
         
-     this.setDataList(value)
+    //  this.setDataList(value)
       
       
     },
     // 封装好的显示数据列表
     setDataList(value){
         // 设置datalist的值
-        this.dataList=  this.flightData.flights.slice
-        ((this.pageIndex-1)*this.PageSize,
-        this.pageIndex*this.PageSize);
-        console.log(this.dataList)
+   
     }
   }
 };

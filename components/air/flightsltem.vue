@@ -74,12 +74,12 @@ export default {
       const end = arr.split(":");
       const start = dep.split(":");
 
-      console.log(start, end);
+    //   console.log(start, end);
 
       // 第二天凌晨
     // 数组之间直接比较大小，比较的是第一个值
       if (end[0]*1 < start[0]*1) {
-        console.log(123);
+        // console.log(123);
         end[0] += 24;
       }
 
