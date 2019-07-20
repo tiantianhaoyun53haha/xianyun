@@ -88,7 +88,6 @@ export default {
       }
     },
     // 封装的输入框里面改变时候触发的函数
-
     querySearchCity(queryString, cb, callback) {
       // 下拉列表不显示，当没有输入值的时候
       if (!queryString) {
@@ -104,6 +103,7 @@ export default {
         }
       }).then(res => {
         const { data } = res.data;
+
         // 给数组中的对象添加value值，
         // 因为返回来的数据身上没有value值，我们需要把数据处理之后，然后把处理后的数据作为value的值放在data里面的每个对象身上
         // 就是把返回的值中的城市信息去掉市字，放在一个新的数组里面
@@ -111,6 +111,7 @@ export default {
           v.value = v.name.replace("市", "");
           return v;
         });
+        console.log(newData);
         callback(newData);
         cb(newData);
       });
@@ -118,7 +119,8 @@ export default {
     // 出发城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDepartSearch(value, cb) {
-      this.querySearchCity(value, cb, (arr) => {
+      this.querySearchCity(value, cb, arr => {
+        console.log(arr);
         this.form.departCity = arr[0].value;
         this.form.departCode = arr[0].sort;
       });
@@ -127,7 +129,7 @@ export default {
     // 目标城市输入框获得焦点时触发
     // value 是选中的值，cb是回调函数，接收要展示的列表
     queryDestSearch(value, cb) {
-      this.querySearchCity(value, cb,(arr)  => {
+      this.querySearchCity(value, cb, arr => {
         this.form.destCity = arr[0].value;
         this.form.destCode = arr[0].sort;
       });
