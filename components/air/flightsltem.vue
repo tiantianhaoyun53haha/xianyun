@@ -86,8 +86,8 @@ export default {
       // 对我们可以拿到的数据进行操作，先相减，用间隔时间得到我们需要的值
       const dis = end[0] * 60 + +end[1] - (start[0] * 60 + +start[1]);
       //   console.log(dis)
-      console.log(end[0] * 60 + +end[1]);
-      console.log(start[0] * 60 + +start[1]);
+      // console.log(end[0] * 60 + +end[1]);
+      // console.log(start[0] * 60 + +start[1]);
 
       const hours = Math.floor(dis / 60);
       const min = dis % 60;
