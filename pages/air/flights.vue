@@ -4,7 +4,8 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-        <flightsFilters :data= "cacheFlightsData"/>
+         <!-- changeFlight会默认传递参数 -->
+        <flightsFilters :data= "cacheFlightsData"  @changeFlights="changeFlights"/>
         <!-- 航班头部布局 -->
         <flightListHead  />
 
@@ -98,6 +99,10 @@ export default {
     handleSizeChange(value) {
       this.PageSize = value;
       //  this.setDataList(value)
+    },
+
+    changeFlights(arr){
+      this.flightData.flights=arr
     },
     // 页面切换的时候触发
     handleCurrentChange(value) {
