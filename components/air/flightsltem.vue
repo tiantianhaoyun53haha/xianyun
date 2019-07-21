@@ -47,7 +47,11 @@
             </el-col>
             <el-col :span="5" class="price">￥{{ item.org_settle_price }}</el-col>
             <el-col :span="3" class="choose-button">
-              <el-button type="warning" size="mini">选定</el-button>
+              <el-button
+                @click="handleToOrder(   item.seat_xid )"
+                type="warning"
+                size="mini"
+              >选定</el-button>
               <p>剩余：{{item.discount}}</p>
             </el-col>
           </el-row>
@@ -64,6 +68,17 @@ export default {
       isShow: false
     };
   },
+  methods: {
+    handleToOrder(seat_xid) {
+      this.$router.push({
+        path: "/air/order",
+        query: {
+          id:this.data.id,
+          seat_xid
+        }
+      });
+    }
+  },
   computed: {
     rankTime() {
       //   准备数据
@@ -74,11 +89,11 @@ export default {
       const end = arr.split(":");
       const start = dep.split(":");
 
-    //   console.log(start, end);
+      //   console.log(start, end);
 
       // 第二天凌晨
-    // 数组之间直接比较大小，比较的是第一个值
-      if (end[0]*1 < start[0]*1) {
+      // 数组之间直接比较大小，比较的是第一个值
+      if (end[0] * 1 < start[0] * 1) {
         // console.log(123);
         end[0] += 24;
       }
