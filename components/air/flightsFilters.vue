@@ -79,10 +79,26 @@ export default {
   },
   methods: {
     // 选择机场时候触发
-    handleAirport(value) {},
+    handleAirport(value) {
+         const arr= this.data.flights.filter(v=>{
+            return v.org_airport_name===value
+        })
+        this.$emit( "changeFlights",arr )
+    },
 
     // 选择出发时间时候触发
-    handleFlightTimes(value) {},
+    handleFlightTimes(value) {
+        // 准备过滤时间
+        const [from,to]=value.split(",");
+        // 用过滤器对原数据进行筛选
+        const arr = this.data.flights.filter(v=>{
+            const [start]=v.dep_time.split(":");
+            // 对符合条件的数据进行返回
+            return +from <= +start && +start < +to;
+        })
+        // 把数据发送回父组件
+           this.$emit( "changeFlights",arr );
+    },
 
     // 选择航空公司时候触发
     handleCompany(value) {
