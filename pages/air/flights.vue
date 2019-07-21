@@ -33,7 +33,7 @@
       <!-- 侧边栏 -->
       <div class="aside">
         
-        <!-- 侧边栏组件 -->
+    <flightsAside/>
       </div>
     </el-row>
   </section>
@@ -44,6 +44,7 @@ import moment from "moment";
 import flightListHead from "@/components/air/flightListHead";
 import flightsltem from "@/components/air/flightsltem";
 import flightsFilters from "@/components/air/flightsFilters";
+import flightsAside from "@/components/air/flightsAside";
 
 export default {
   data() {
@@ -69,7 +70,8 @@ export default {
   components: {
     flightsltem,
     flightListHead,
-    flightsFilters
+    flightsFilters,
+    flightsAside
   },
   computed: {
     dataList() {
