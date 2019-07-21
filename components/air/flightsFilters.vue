@@ -43,7 +43,7 @@
             v-for="(item,index) in airSizeList "
             :key="index"
             :label="item.type"
-            :value="item.type"
+            :value="item.size"
           ></el-option>
         </el-select>
       </el-col>
@@ -63,11 +63,11 @@ export default {
       flightTimes: "", // 出发时间
       company: "", // 航空公司
       airSize: "", // 机型大小
-    //   字符串需要用引号
-      airSizeList:[
-          {type:"大",size:"L"},
-          {type:"中",size:"M"},
-          {type:"小",size:"S"}
+      //   字符串需要用引号
+      airSizeList: [
+        { type: "大", size: "L" },
+        { type: "中", size: "M" },
+        { type: "小", size: "S" }
       ]
     };
   },
@@ -80,39 +80,53 @@ export default {
   methods: {
     // 选择机场时候触发
     handleAirport(value) {
-         const arr= this.data.flights.filter(v=>{
-            return v.org_airport_name===value
-        })
-        this.$emit( "changeFlights",arr )
+      const arr = this.data.flights.filter(v => {
+        return v.org_airport_name === value;
+      });
+      this.$emit("changeFlights", arr);
     },
 
     // 选择出发时间时候触发
     handleFlightTimes(value) {
-        // 准备过滤时间
-        const [from,to]=value.split(",");
-        // 用过滤器对原数据进行筛选
-        const arr = this.data.flights.filter(v=>{
-            const [start]=v.dep_time.split(":");
-            // 对符合条件的数据进行返回
-            return +from <= +start && +start < +to;
-        })
-        // 把数据发送回父组件
-           this.$emit( "changeFlights",arr );
+      // 准备过滤时间
+      const [from, to] = value.split(",");
+      // 用过滤器对原数据进行筛选
+      const arr = this.data.flights.filter(v => {
+        const [start] = v.dep_time.split(":");
+        // 对符合条件的数据进行返回
+        return +from <= +start && +start < +to;
+      });
+      // 把数据发送回父组件
+      this.$emit("changeFlights", arr);
     },
 
     // 选择航空公司时候触发
     handleCompany(value) {
-       const arr= this.data.flights.filter(v=>{
-            return v.airline_name===value
-        })
-        this.$emit( "changeFlights",arr )
+      const arr = this.data.flights.filter(v => {
+        return v.airline_name === value;
+      });
+      this.$emit("changeFlights", arr);
     },
 
     // 选择机型时候触发
-    handleAirSize(value) {},
+    handleAirSize(value) {
+      const arr = this.data.flights.filter(v => {
+        //   value=item.size
+        return v.plane_size === value;
+      });
+
+      // 得到一个过滤后的数组，传递回去给父组件
+      this.$emit("changeFlights", arr);
+    },
 
     // 撤销条件时候触发
-    handleFiltersCancel() {}
+    handleFiltersCancel() {
+        this.airport="";
+        this.flightTimes="",
+        this.company="",
+        this.airSize="",
+        this.$emit("changeFlights",this.data.flights)
+    }
   }
 };
 </script>
