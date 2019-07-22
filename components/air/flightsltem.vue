@@ -48,7 +48,7 @@
             <el-col :span="5" class="price">￥{{ item.org_settle_price }}</el-col>
             <el-col :span="3" class="choose-button">
               <el-button
-                @click="handleToOrder(   item.seat_xid )"
+                @click="handleToOrder( data.id,   item.seat_xid )"
                 type="warning"
                 size="mini"
               >选定</el-button>
@@ -69,11 +69,11 @@ export default {
     };
   },
   methods: {
-    handleToOrder(seat_xid) {
+    handleToOrder( id,seat_xid) {
       this.$router.push({
         path: "/air/order",
         query: {
-          id:this.data.id,
+          id,
           seat_xid
         }
       });

@@ -201,7 +201,21 @@ export default {
           path: "/air/flights",
           query: this.form
         });
-      }
+      };
+  // 把当前的搜索条件放在本地
+    // 把数据从本地拿出来
+  const airs=JSON.parse(localStorage.getItem("airs"))||[];
+  // 把搜索的数据放在这个拿出来的数据里面
+  airs.unshift(this.form);
+  // 把数据截取5条,先判断一下是否有5条
+  if(airs.length>5){
+    airs.length=5
+  };
+  // 把数据存储在本地
+  localStorage.setItem("airs",JSON.stringify(airs));
+  
+      
+
     }
   },
   mounted() {}
