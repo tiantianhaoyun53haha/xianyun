@@ -106,6 +106,7 @@ export default {
 
     changeFlights(arr) {
       this.flightData.flights = arr;
+    
     },
     // 页面切换的时候触发
     handleCurrentChange(value) {
