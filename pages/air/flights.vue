@@ -4,10 +4,10 @@
       <!-- 顶部过滤列表 -->
       <div class="flights-content">
         <!-- 过滤条件 -->
-         <!-- changeFlight会默认传递参数 -->
-        <flightsFilters :data= "cacheFlightsData"  @changeFlights="changeFlights"/>
+        <!-- changeFlight会默认传递参数 -->
+        <flightsFilters :data="cacheFlightsData" @changeFlights="changeFlights" />
         <!-- 航班头部布局 -->
-        <flightListHead  />
+        <flightListHead />
 
         <!-- 航班信息 -->
         <flightsltem v-for="(item,index) in dataList" :key="index" :data="item" />
@@ -32,8 +32,7 @@
 
       <!-- 侧边栏 -->
       <div class="aside">
-        
-    <flightsAside/>
+        <flightsAside />
       </div>
     </el-row>
   </section>
@@ -55,10 +54,10 @@ export default {
         options: {}
       },
       // 用于缓存大数据，一旦赋值之后，就不能修改
-      cacheFlightsData:{
-        flights:[],
-        info:{},
-        options:{}
+      cacheFlightsData: {
+        flights: [],
+        info: {},
+        options: {}
       },
 
       //   dataList:[],//重新渲染页面的数组
@@ -73,6 +72,13 @@ export default {
     flightsFilters,
     flightsAside
   },
+
+  // 监听路由的变化
+  watch: {
+    $route() {
+      this.getData();
+    }
+  },
   computed: {
     dataList() {
       return this.flightData.flights.slice(
@@ -83,19 +89,7 @@ export default {
     }
   },
   mounted() {
-    this.$axios({
-      url: "/airs",
-      params: this.$route.query
-    }).then(res => {
-      //   console.log(res)
-      console.log(res.data);
-      // 请求回来的数据都有用，大的数据是一个对象，那么我们也定义一个对象
-      // 来接收这个值
-      this.flightData = res.data;
-      //   第一页的数据显示
-      //  this.setDataList()
-      this.cacheFlightsData={...res.data};
-    });
+    this.getData();
   },
   methods: {
     //   切换条数的时候触发
@@ -104,8 +98,8 @@ export default {
       //  this.setDataList(value)
     },
 
-    changeFlights(arr){
-      this.flightData.flights=arr
+    changeFlights(arr) {
+      this.flightData.flights = arr;
     },
     // 页面切换的时候触发
     handleCurrentChange(value) {
@@ -116,6 +110,23 @@ export default {
     // 封装好的显示数据列表
     setDataList(value) {
       // 设置datalist的值
+    },
+    // 封装的重新请求页面数据的代码
+    getData() {
+      this.pageIndex=1;
+      this.$axios({
+        url: "/airs",
+        params: this.$route.query
+      }).then(res => {
+        //   console.log(res)
+        console.log(res.data);
+        // 请求回来的数据都有用，大的数据是一个对象，那么我们也定义一个对象
+        // 来接收这个值
+        this.flightData = res.data;
+        //   第一页的数据显示
+        //  this.setDataList()
+        this.cacheFlightsData = { ...res.data };
+      });
     }
   }
 };
