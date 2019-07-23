@@ -74,11 +74,17 @@ export default {
   },
 
   // 监听路由的变化
-  watch: {
-    $route() {
-      this.getData();
-    }
-  },
+  // watch: {
+  //   $route() {
+  //     this.getData();
+  //   }
+  // },
+
+    // 当前url参数发生变化时候会触发
+    beforeRouteUpdate (to, from, next) {
+        next();
+        this.getData();
+    },
   computed: {
     dataList() {
       return this.flightData.flights.slice(
