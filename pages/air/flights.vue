@@ -106,7 +106,13 @@ export default {
 
     changeFlights(arr) {
       this.flightData.flights = arr;
-    
+    // 过滤器数据变化让父组件分页显示的效果
+      // 重返第一页
+      this.pageIndex=1;
+      // 总条数
+      this.total=this.flightData.flights.length;
+
+
     },
     // 页面切换的时候触发
     handleCurrentChange(value) {
